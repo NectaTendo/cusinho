@@ -1,0 +1,134 @@
+{% extends 'pages/base.html' %}
+
+{% block extra_head %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #eef1f5;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    thead {
+        background-color: #007bff;
+        color: white;
+    }
+
+    select {
+        padding: 4px;
+    }
+
+    button {
+        padding: 6px 10px;
+        margin: 2px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .confirmar {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .remover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    td.actions {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+</style>
+{% endblock extra_head %}
+
+{% block content %}
+<div class="container">
+    <h2>Organização da Partida - Arena Flamengo (Futsal)</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Posição</th>
+                <th>Presença</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>João Silva</td>
+                <td>Goleiro</td>
+                <td>Confirmado</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>Maria Souza</td>
+                <td>Lateral</td>
+                <td>Confirmado</td>
+                <td>-</td>
+            </tr>
+            <tr id="linha-caua">
+                <td>Cauã</td>
+                <td>
+                    <select id="posicao-caua">
+                        <option value="">Selecione</option>
+                        <option value="Goleiro">Goleiro</option>
+                        <option value="Zagueiro">Zagueiro</option>
+                        <option value="Lateral">Lateral</option>
+                        <option value="Meio-campo">Meio-campo</option>
+                        <option value="Atacante">Atacante</option>
+                    </select>
+                </td>
+                <td id="presenca-caua">Não</td>
+                <td class="actions">
+                    <button class="confirmar" onclick="confirmarCaua()">Confirmar</button>
+                    <button class="remover">Remover</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    function confirmarCaua() {
+        const presenca = document.getElementById("presenca-caua");
+        const select = document.getElementById("posicao-caua");
+        const selectedPosicao = select.value;
+
+        if (selectedPosicao === "") {
+            alert("Por favor, selecione uma posição antes de confirmar.");
+            return;
+        }
+
+        presenca.textContent = "Confirmado";
+    }
+</script>
+{% endblock %}

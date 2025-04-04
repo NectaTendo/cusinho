@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import CoordenadaForm, ReservasForm, UpdateUserForm, UpdateProfileForm, DadosCampoForm,FeedbackForm
@@ -60,6 +60,68 @@ def mainPage(request):
                 
                 }
     return render(request, "pages/main.html", context)
+
+def available_places(request):
+    # Obter parâmetros da URL
+    regiao = request.GET.get('regiao', 'centro')
+    esporte = request.GET.get('esporte', 'futebol')
+    
+    context = {
+        'regiao': regiao,
+        'esporte': esporte,
+    }
+    return render(request, 'pages/available_places.html', context)
+
+
+
+
+def campo_detalhes(request, nome_campo):
+    # Dicionário com informações dos campos
+    campos = {
+        "arena_flamengo": {
+            "nome": "Arena Flamengo",
+            "imagem_capa": "/static/images/arena_flamengo1.jpg",
+            "partidas": [
+                {
+                    "id": 1,
+                    "titulo": "Flamengo vs Vasco",
+                    "data": "2025-04-10",
+                    "horario": "18:00",
+                    "categoria": "adulto",
+                    "genero": "masculino",
+                    "vagas": 5
+                },
+                {
+                    "id": 2,
+                    "titulo": "Amistoso Feminino",
+                    "data": "2025-04-12",
+                    "horario": "15:00",
+                    "categoria": "adulto",
+                    "genero": "feminino",
+                    "vagas": 8
+                },
+                # Mais partidas...
+            ]
+        },
+        # Outros campos...
+    }
+
+    if nome_campo not in campos:
+        return render(request, "pages/erro.html", {"mensagem": "Campo não encontrado!"})
+
+    contexto = {
+        "campo": campos[nome_campo],
+        "nome": campos[nome_campo]["nome"],
+        "imagem_capa": request.build_absolute_uri(campos[nome_campo]["imagem_capa"]),
+        "partidas_json": json.dumps(campos[nome_campo]["partidas"])
+    }
+    return render(request, "pages/campo_detalhes.html", contexto)
+
+
+@login_required
+def participar_partida(request, partida_id):
+    return render(request, 'pages/participar.html', {'partida_id': partida_id})
+
 
 
 def registerPage(request):

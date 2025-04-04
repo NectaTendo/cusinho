@@ -2,190 +2,94 @@
 {% load static %}
 {% load i18n %}
 
-
 {% block extra_head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="shortcut icon" href="{% static "images\Goal_icon-icons.com_62267.ico" %}" type="image/x-icon">
-{% endblock extra_head %}
-    
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="shortcut icon" href="{% static 'images\Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
+<style>
+    .intro-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: #1a1a1a;
+        color: white;
+        margin: 30px auto 20px;
+        border-radius: 8px;
+        max-width: 1500px;
+        margin-top: 110px;
+    }
 
-    {% block content %}
-    <div class="content">
-        <div class="map-container">
-            <div id="map"></div>
-        </div>
+    .sport-icons {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        width: 100%;
+    }
     
-        <div class="dropdown">
-            <button class="dropbtn">Selecione uma região para visualizar os campos disponíveis
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="#" data-coords="-22.963530, -42.97589">Itaipuaçu</a>
-                <a href="#" data-coords="-22.9187, -42.8224">Centro</a>
-                <a href="#" data-coords="-22.93041, -42.883646">São José</a>
-                <a href="#" data-coords="-22.914444, -42.931020">Inoã</a>
-                <a href="#" data-coords="-22.929425, -42.967063">Itaocaia</a>
-                <a href="#" data-coords="-22.9287, -42.8124">Parque Nanci</a>
+    .sport-icon {
+        text-align: center;
+        transition: transform 0.3s;
+        cursor: pointer;
+    }
+    
+    .sport-icon:hover {
+        transform: scale(1.1);
+    }
+    
+    .sport-icon img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        padding: 5px;
+        background-color: #333;
+        border: 2px solid #4CAF50;
+    }
+
+    .sport-icon a {
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="intro-section">
+        <h1>Bem-vindo ao Esportefy!</h1>
+        <p>Encontre os melhores campos esportivos da sua região</p>
+        
+        <div class="sport-icons">
+            <div class="sport-icon">
+                <a href="{% url 'available_places' %}">
+                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
+                    <span>Futebol</span>
+                </a>
+            </div>
+            <div class="sport-icon">
+                <a href="{% url 'available_places' %}">
+                    <img src="{% static 'images/basketball.jpg' %}" alt="Basquete">
+                    <span>Basquete</span>
+                </a>
+            </div>
+            <div class="sport-icon">
+                <a href="{% url 'available_places' %}">
+                    <img src="{% static 'images/volleyball.jpg' %}" alt="Vôlei">
+                    <span>Vôlei</span>
+                </a>
+            </div>
+            <div class="sport-icon">
+                <a href="{% url 'available_places' %}">
+                    <img src="{% static 'images/tennis.jpg' %}" alt="Tênis">
+                    <span>Tênis</span>
+                </a>
             </div>
         </div>
-
-        {% if messages %}
-    <ul class="messages-error">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                {{ message }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-{% if messages %}
-    <ul class="messages-success">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                {{ message }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-        <form id="coordForm" method="post" class="form" enctype="multipart/form-data" onsubmit="return confirmSubmit()">
-            {% csrf_token %}
-            {{ form.as_p }}
-            
-            <button id="button_submit"type="submit">Salvar</button>
-        </form>
     </div>
-
-    <!-- Incluindo o JavaScript do Leaflet -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    
-
-    <script>
-        
-        // Função para esconder as mensagens após 10 segundos
-        setTimeout(function() {
-            const errorContainer = document.querySelector('.messages-error');
-            const successContainer = document.querySelector('.messages-success');
-            
-            if (errorContainer) {
-                errorContainer.style.display = 'none'; // Esconde a caixa de mensagens de erro
-            }
-            
-            if (successContainer) {
-                successContainer.style.display = 'none'; // Esconde a caixa de mensagens de sucesso
-            }
-        }, 5000); // 
-        // Inicializando o mapa e definindo suas coordenadas iniciais e nível de zoom
-        var map = L.map('map').setView([-22.9187, -42.8224], 15);
-
-        // Adicionando o tile layer do OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-
-        // Função para atualizar o mapa com novas coordenadas
-        function updateMap(coords) {
-            var [lat, lng] = coords.split(',').map(Number);
-            map.setView([lat, lng], 15);
-        }
-
-        // Adicionando um marcador em Maricá
-        var marker = L.marker([-22.9187, -42.8224]).addTo(map);
-        marker.bindPopup('<b>Maricá</b>').openPopup();
-        
-        var marker = L.marker([-22.930808, -42.884595]).addTo(map);
-        marker.bindPopup('<b>São José</b>').openPopup();
-
-        var marker = L.marker([-22.929425, -42.967063]).addTo(map);
-        marker.bindPopup('<b>Itaocaia</b>').openPopup();
-
-        var marker = L.marker([-22.963530,-42.97589 ]).addTo(map);
-        marker.bindPopup('<b>Itaipuaçu</b>').openPopup();
-        
-        var marker = L.marker([ -22.914207, -42.930515]).addTo(map);
-        marker.bindPopup('<b>Inoã</b>').openPopup();
-
-        var marker = L.marker([-22.9287, -42.8124]).addTo(map);
-        marker.bindPopup('<b>Parque Nanci</b>').openPopup();
-
-        function updateMap(coords) {
-            var [lat, lng] = coords.split(',').map(Number);
-            map.setView([lat, lng], 15);
-        }
-
-        // Adicionando evento de clique nos itens do dropdown
-        document.querySelectorAll('.dropdown-content a').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault(); // Impede o comportamento padrão do link
-                var coords = this.getAttribute('data-coords');
-                updateMap(coords);
-            });
-        });
-
-        // Adicionando evento de clique ao mapa para mostrar as coordenadas
-        map.on('click', function(e) {
-            var latlng = e.latlng;
-            var popupContent = `Latitude: ${latlng.lat.toFixed(6)}<br>Longitude: ${latlng.lng.toFixed(6)}`;
-            L.popup()
-                .setLatLng(latlng)
-                .setContent(popupContent)
-                .openOn(map);
-        });
-
-        // Adicionando evento de clique ao mapa para mostrar as coordenadas
-        map.on('click', function(e) {
-            var latlng = e.latlng;
-            var popupContent = `Latitude: ${latlng.lat.toFixed(6)}<br>Longitude: ${latlng.lng.toFixed(6)}`;
-            L.popup()
-                .setLatLng(latlng)
-                .setContent(popupContent)
-                .openOn(map);
-        });
-        
-        var data = {{ coordenadas|safe }}
-        console.log(data);
-        // Exibindo os marcadores salvos no banco de dados
-            data.forEach(function(coordenada) {
-                var img = L.icon({
-                    iconUrl: '{% static 'images/campo-de-futebol.png' %}',
-                });
-                console.log("coordenada")
-                L.marker([coordenada.latitude, coordenada.longitude], { icon: img }).addTo(map)
-                .bindPopup("<a href= http://localhost:8000/accounts/profile/listas> Ver mais </a>")
-            })
-
-    function converterParaSegundos(hora) {
-        var partes = hora.split(":");
-        var horas = Number(partes[0]);
-        var minutos = Number(partes[1]);
-        return (horas * 3600) + (minutos * 60); 
-    }
-function confirmSubmit() {
-        var ini = document.getElementById('id_inicio').value;
-        var fin = document.getElementById('id_final').value;
-        
-        var ini_seg = converterParaSegundos(ini)
-        var fin_seg = converterParaSegundos(fin)
-          
-        var duracao = fin_seg - ini_seg;
-        console.log(duracao)
-        var duracao_horas = duracao / 3600;
-        var valor_por_hora = 50;
-        
-        console.log('duracao:'+duracao+ ' horario inicial: '+ini_seg + ' horario final: ' +fin_seg)
-        var valor_total = duracao_horas * valor_por_hora;
-
-        return confirm(`Tem certeza que deseja salvar as alterações? O valor total é R$${valor_total.toFixed(2)}.`);  
-
-
-}
-
-    </script>
-    {% endblock content %}
-
-
-
-
+</div>
+{% endblock %}

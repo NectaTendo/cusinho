@@ -22,6 +22,7 @@ class DadosCampo(models.Model):
     telefone = models.CharField(max_length=11)       
     email = models.EmailField()
     foto = models.ImageField( default= "default.jpg",upload_to="camp_pics")
+    tipo_esporte = models.CharField(max_length=50, choices=[('futebol', 'Futebol'), ('basquete', 'Basquete'), ('volei', 'Vôlei'), ('tenis', 'Tênis')], null=True)
 
     def save(self, *args, **kwargs):
         super().save()

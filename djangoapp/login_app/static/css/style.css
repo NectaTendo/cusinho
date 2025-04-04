@@ -16,7 +16,7 @@
     /* width: 100%; */
 }
 body{
-    background-color: rgb(65, 157, 41);
+    background-color:black;
     margin: 0;
     padding: 0;
 }
@@ -177,6 +177,28 @@ button[type="submit"] {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
+
+.carrossel-imagem {
+    max-width: 200px;
+    height: auto;
+    display: block;
+}
+
+.filtro-container {
+    width: 250px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+.calendar-container {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
 .messages-error {
     position: fixed;
     top: 20px;
@@ -198,4 +220,13 @@ button[type="submit"] {
     justify-content: center;
     color: #369c07;
     text-decoration-color: #721c24;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }

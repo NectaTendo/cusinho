@@ -1,0 +1,370 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+    .map-container {
+        width: 100%;
+        height: 500px;
+        margin-top: 20px;
+    }
+    
+    .voltar-btn {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    /* Filtros de região */
+    .region-filters {
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .region-filters button {
+        margin: 5px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #007BFF;
+        color: white;
+    }
+
+    .region-filters button:hover {
+        background-color: #0056b3;
+    }
+
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.8);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: black;
+    }
+
+    /* Carousel styles */
+    .carousel {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .carousel-inner {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+
+    .carousel-item {
+        min-width: 100%;
+        height: 300px;
+    }
+
+    .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .carousel-control.prev {
+        left: 10px;
+    }
+
+    .carousel-control.next {
+        right: 10px;
+    }
+
+    .play-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .play-btn:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 style="text-align: center; color: white;">Campos disponíveis para {{ esporte|title }} | {{ regiao|title }}</h1>
+    
+    <!-- Filtros de Região -->
+    <div class="region-filters">
+        <button onclick="changeRegion('itaipuacu')">Itaipuaçu</button>
+        <button onclick="changeRegion('centro')">Centro</button>
+        <button onclick="changeRegion('sao_jose')">São José</button>
+        <button onclick="changeRegion('inoa')">Inoã</button>
+        <button onclick="changeRegion('itaocaia')">Itaocaia</button>
+        <button onclick="changeRegion('parque_nanci')">Parque Nanci</button>
+    </div>
+
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+    
+    <button class="voltar-btn" onclick="window.history.back()">Voltar</button>
+</div>
+
+<!-- Modal -->
+<div id="campoModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle"></h2>
+        
+        <div class="carousel">
+            <div class="carousel-inner" id="carouselInner"></div>
+            <button class="carousel-control prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-control next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        
+        <a id="playBtn" class="play-btn" href="#">JOGAR</a>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Coordenadas das regiões
+        const regioes = {
+            itaipuacu: [-22.963530, -42.97589],
+            centro: [-22.9187, -42.8224],
+            sao_jose: [-22.93041, -42.883646],
+            inoa: [-22.914444, -42.931020],
+            itaocaia: [-22.929425, -42.967063],
+            parque_nanci: [-22.9287, -42.8124]
+        };
+
+        // Lista de campos de futebol cadastrados com imagens
+        const campos = [
+            { 
+                nome: "Campo A", 
+                regiao: "itaipuacu", 
+                esporte: "futebol", 
+                lat: -22.965, 
+                lng: -42.976,
+                imagens: [
+                    "{% static 'images/arena_flamengo1.jpg' %}",
+                    "{% static 'images/arena_flamengo2.jpg' %}",
+                    "{% static 'images/arena_flamengo3.jpeg' %}"
+                ],
+                url: "{% url 'campo_detalhes' 'arena_flamengo' %}"
+            },
+            { 
+                nome: "Arena Flamengo", 
+                regiao: "centro", 
+                esporte: "futebol society", 
+                lat: -22.919, 
+                lng: -42.823,
+                imagens: [
+                    "/static/images/arena_flamengo1.jpg",
+                    "/static/images/arena_flamengo2.jpg",
+                    "/static/images/arena_flamengo3.jpeg"
+                ],
+                url: "{% url 'campo_detalhes' 'arena_flamengo' %}"
+            },
+            { 
+                nome: "Campo C", 
+                regiao: "sao_jose", 
+                esporte: "futsal", 
+                lat: -22.931, 
+                lng: -42.884,
+                imagens: [
+                    "{% static 'images/arena1.jpg' %}",
+                    "{% static 'images/arena2.jpg' %}",
+                    "{% static 'images/arena3.jpg' %}"
+                ],
+                url: "{% url 'campo_detalhes' 'arena_flamengo' %}"
+            },
+            // Adicione os outros campos com suas imagens...
+        ];
+
+        // Obter parâmetros da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let regiao = urlParams.get('regiao') || "centro"; // Define região padrão
+        let esporte = urlParams.get('esporte') || "futebol"; 
+
+        // Criar mapa
+        var map = L.map('map').setView(regioes[regiao], 15);
+
+        // Adicionar camada do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Elementos do modal
+        const modal = document.getElementById("campoModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const carouselInner = document.getElementById("carouselInner");
+        const playBtn = document.getElementById("playBtn");
+        const closeBtn = document.querySelector(".close");
+        const prevBtn = document.querySelector(".carousel-control.prev");
+        const nextBtn = document.querySelector(".carousel-control.next");
+
+        let currentCampo = null;
+        let currentSlide = 0;
+
+        // Função para abrir o modal
+        function openModal(campo) {
+            currentCampo = campo;
+            currentSlide = 0;
+            modalTitle.textContent = campo.nome;
+            playBtn.href = campo.url;
+            
+            // Limpar e adicionar imagens ao carrossel
+            carouselInner.innerHTML = '';
+            campo.imagens.forEach(img => {
+                const item = document.createElement("div");
+                item.className = "carousel-item";
+                item.innerHTML = `<img src="${img}" alt="${campo.nome}">`;
+                carouselInner.appendChild(item);
+            });
+            
+            updateCarousel();
+            modal.style.display = "block";
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // Função para atualizar o carrossel
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        // Event listeners
+        closeBtn.addEventListener("click", closeModal);
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        prevBtn.addEventListener("click", () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+            } else {
+                currentSlide = currentCampo.imagens.length - 1;
+            }
+            updateCarousel();
+        });
+
+        nextBtn.addEventListener("click", () => {
+            if (currentSlide < currentCampo.imagens.length - 1) {
+                currentSlide++;
+            } else {
+                currentSlide = 0;
+            }
+            updateCarousel();
+        });
+
+        // Adicionar marcadores clicáveis
+        campos.forEach(campo => {
+            if (campo.regiao === regiao) {
+                const marker = L.marker([campo.lat, campo.lng])
+                    .addTo(map)
+                    .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
+                    .on('click', function() {
+                        openModal(campo);
+                    });
+            }
+        });
+
+        // Função para alterar a região do mapa ao clicar nos botões de filtro
+        function changeRegion(novaRegiao) {
+            if (novaRegiao in regioes) {
+                map.setView(regioes[novaRegiao], 15);
+                map.eachLayer(layer => {
+                    if (!!layer.toGeoJSON) {
+                        map.removeLayer(layer);
+                    }
+                });
+
+                // Adiciona a camada do OpenStreetMap novamente
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                // Adicionar marcadores da nova região
+                campos.forEach(campo => {
+                    if (campo.regiao === novaRegiao) {
+                        const marker = L.marker([campo.lat, campo.lng])
+                            .addTo(map)
+                            .bindPopup(`<b>${campo.nome}</b><br>Esporte: ${campo.esporte}`)
+                            .on('click', function() {
+                                openModal(campo);
+                            });
+                    }
+                });
+            }
+        }
+
+        // Tornar a função acessível globalmente
+        window.changeRegion = changeRegion;
+    });
+</script>
+{% endblock %}
