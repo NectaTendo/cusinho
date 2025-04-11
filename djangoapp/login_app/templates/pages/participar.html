@@ -1,4 +1,6 @@
 {% extends 'pages/base.html' %}
+{% load static %}
+
 
 {% block extra_head %}
 <style>
@@ -64,12 +66,21 @@
         justify-content: center;
         gap: 5px;
     }
+
+    .header-info {
+        background-color: #2a2a2a;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
 </style>
 {% endblock extra_head %}
 
 {% block content %}
 <div class="container">
-    <h2>Organização da Partida - Arena Flamengo (Futsal)</h2>
+    <h2>Organização da Partida - {{ local }} ({{ esporte }})</h2>
     
     <table>
         <thead>
@@ -94,7 +105,7 @@
                 <td>-</td>
             </tr>
             <tr id="linha-caua">
-                <td>Cauã</td>
+                <td>ntn</td>
                 <td>
                     <select id="posicao-caua">
                         <option value="">Selecione</option>
@@ -114,9 +125,30 @@
         </tbody>
     </table>
 </div>
+<div style="text-align: center; margin-top: 20px;">
+    <button onclick="window.open('https://chat.whatsapp.com/GOPVN5VlnEz1l7t4KvcHMO', '_blank')" 
+            style="background: #25D366; 
+                   color: white; 
+                   border: none; 
+                   padding: 10px 20px; 
+                   border-radius: 5px; 
+                   cursor: pointer;
+                   font-size: 16px;">
+        <img src="{% static 'images/pngtree-whatsapp-icon-png-image_6315990.png' %}" 
+             alt="WhatsApp" 
+             style="width: 20px; vertical-align: middle; margin-right: 8px;">
+        Ir para grupo de WhatsApp
+    </button>
+</div>
+
+<!-- Tela de redirecionamento -->
+
 {% endblock content %}
 
 {% block extra_js %}
+
+
+
 <script>
     function confirmarCaua() {
         const presenca = document.getElementById("presenca-caua");

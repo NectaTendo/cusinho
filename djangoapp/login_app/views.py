@@ -198,6 +198,20 @@ def fazer_relatorio(request):
     
     return render(request, "pages/relatorio.html", context)
 
+# views.py
+def participar_partida(request, partida_id):
+    # Aqui você buscaria os dados da partida no banco de dados
+    # Estou usando dados estáticos como exemplo
+    context = {
+        'esporte': 'Futebol',  # Substitua por dados reais
+        'local': 'Arena Flamengo',  # Substitua por dados reais
+        'jogadores': [
+            {'nome': 'Jeff', 'posicao': 'Goleiro', 'presenca': 'Confirmado'},
+            {'nome': 'Outro Jeff', 'posicao': 'Lateral', 'presenca': 'Confirmado'},
+            {'nome': 'Cauã', 'posicao': '', 'presenca': 'Não'}
+        ]
+    }
+    return render(request, 'pages/participar.html', context)
 
 def listacampos(request):
     query = DadosCampo.objects.all()
@@ -248,8 +262,8 @@ def selecao_opcao(request, esporte):
     esporte_formatado = esporte.capitalize()
     return render(request, 'pages/selecao_opcao.html', {'esporte': esporte_formatado})
 
-def encontrar_partida(request):
-    return render(request, 'pages/encontrar_partida.html')  # você pode criar esse depois
+def reservar_espaco(request):
+    return render(request, 'pages/reservar-espaco.html') 
 
 def criar_partida(request):
     return render(request, 'pages/criar_partida.html')
