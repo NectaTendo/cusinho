@@ -264,12 +264,8 @@
 
     <!-- Calendário Interativo -->
     <div id="calendar"></div>
+>
 
-    <!-- Botão de Reserva -->
-    <div class="text-center mt-4">
-        <button class="btn btn-success btn-reservar" data-bs-toggle="modal" data-bs-target="#reservaModal">
-            RESERVAR ESTE CAMPO
-        </button>
     </div>
 </div>
 
@@ -286,34 +282,6 @@
     </div>
 </div>
 
-<!-- Modal de Reserva -->
-<div class="modal fade" id="reservaModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Nova Reserva</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form-reserva">
-                    <!-- Formulário de reserva será adicionado aqui -->
-                    <div class="mb-3">
-                        <label for="data-reserva" class="form-label">Data</label>
-                        <input type="date" class="form-control" id="data-reserva" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="horario-reserva" class="form-label">Horário</label>
-                        <input type="time" class="form-control" id="horario-reserva" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Confirmar Reserva</button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
 
 {% block extra_js %}

@@ -45,10 +45,10 @@
 
 @keyframes nav-animation {
     from{
-        background-color: white;
+        background-color: #020202;
     }
 
     to{
-        background-color: black;
+        background-color: #070707;
     }
 }

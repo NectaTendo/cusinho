@@ -11,7 +11,7 @@
         flex-direction: column;
         align-items: center;
         padding: 20px;
-        background-color: #1a1a1a;
+        background: linear-gradient(to bottom right, #1e2413, #000000);
         color: white;
         margin: 30px auto 20px;
         border-radius: 8px;
@@ -66,25 +66,26 @@
         
         <div class="sport-icons">
             <div class="sport-icon">
-                <a href="{% url 'available_places' %}">
+                <a href="{% url 'selecao_opcao' 'futebol' %}">
+
                     <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
                     <span>Futebol</span>
                 </a>
             </div>
             <div class="sport-icon">
-                <a href="{% url 'available_places' %}">
+                <a href="{% url 'selecao_opcao' 'basquete' %}">
                     <img src="{% static 'images/basketball.jpg' %}" alt="Basquete">
                     <span>Basquete</span>
                 </a>
             </div>
             <div class="sport-icon">
-                <a href="{% url 'available_places' %}">
+                <a href="{% url 'selecao_opcao' 'vôlei' %}">
                     <img src="{% static 'images/volleyball.jpg' %}" alt="Vôlei">
                     <span>Vôlei</span>
                 </a>
             </div>
             <div class="sport-icon">
-                <a href="{% url 'available_places' %}">
+                <a href="{% url 'selecao_opcao' 'tênis' %}">
                     <img src="{% static 'images/tennis.jpg' %}" alt="Tênis">
                     <span>Tênis</span>
                 </a>

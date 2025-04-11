@@ -243,3 +243,13 @@ def feedPage(request,id):
 
     }
     return render(request,"pages/feedPage.html",context)
+
+def selecao_opcao(request, esporte):
+    esporte_formatado = esporte.capitalize()
+    return render(request, 'pages/selecao_opcao.html', {'esporte': esporte_formatado})
+
+def encontrar_partida(request):
+    return render(request, 'pages/encontrar_partida.html')  # você pode criar esse depois
+
+def criar_partida(request):
+    return render(request, 'pages/criar_partida.html')

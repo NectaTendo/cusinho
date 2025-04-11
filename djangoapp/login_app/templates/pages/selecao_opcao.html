@@ -1,0 +1,93 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="shortcut icon" href="{% static 'images/Goal_icon-icons.com_62267.ico' %}" type="image/x-icon">
+<style>
+    .option-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: #1a1a1a;
+        color: white;
+        margin: 30px auto 20px;
+        border-radius: 8px;
+        max-width: 1200px;
+        margin-top: 110px;
+    }
+
+    .action-icons {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .action-icon {
+        text-align: center;
+        transition: transform 0.3s;
+        cursor: pointer;
+    }
+
+    .action-icon:hover {
+        transform: scale(1.1);
+    }
+
+    .action-icon img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        padding: 5px;
+        background-color: #333;
+        border: 2px solid #4CAF50;
+    }
+
+    .action-icon a {
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="option-section">
+        <h1>O que deseja fazer?</h1>
+        {% if esporte %}
+            <p>Você selecionou: {{ esporte }}</p>
+        {% endif %}
+
+        <p>Escolha uma das opções abaixo</p>
+
+        <div class="action-icons">
+            <div class="action-icon">
+                <a href="{% url 'encontrar_partida' %}">
+                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
+                    <span>Encontrar partida</span>
+                </a>
+            </div>
+            <div class="action-icon">
+                <a href="{% url 'criar_partida' %}">
+                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
+                    <span>Criar partida</span>
+                </a>
+            </div>
+            <div class="action-icon">
+                <a href="{% url 'available_places' %}">
+                    <img src="{% static 'images/soccer-ball.png' %}" alt="Futebol">
+                    <span>Reservar espaço</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
