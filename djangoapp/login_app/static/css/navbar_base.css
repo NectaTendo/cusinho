@@ -1,54 +1,89 @@
+/* Navbar moderna com fundo animado e efeito glass */
 .navbar {
-    /* background-color: #333; */
-    color: white;
-    padding: 10px 20px;
+    padding: 14px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: Arial, sans-serif;
-    animation: nav-animation 7.5s infinite alternate;
-    
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(270deg, #0f0f0f, #1a3c1a, #0f0f0f);
+    background-size: 600% 600%;
+    animation: gradientFlow 12s ease infinite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    border-radius: 0 0 16px 16px;
 }
 
+/* Logo estilizada */
 .navbar-logo {
-    font-size: 24px;
-    cursor: pointer;
+    font-size: 28px;
     font-weight: bold;
-
+    cursor: pointer;
+    color: #aaffaa;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
+    transition: transform 0.3s ease;
 }
 
+.navbar-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Menu de navegação */
 .navbar-menu {
     list-style: none;
+    display: flex;
+    gap: 25px;
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
+/* Itens do menu */
 .navbar-menu li {
-    margin: 0 15px;
-    
+    position: relative;
 }
 
+/* Links com efeito neon no hover */
 .navbar-menu a {
-    color: white;
+    color: #f1f1f1;
     text-decoration: none;
     font-size: 18px;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.navbar-menu a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -4px;
+    background-color: #69ff69;
+    transition: width 0.3s ease;
+}
+
+.navbar-menu a:hover::after {
+    width: 100%;
 }
 
 .navbar-menu a:hover {
-    text-decoration: underline;
-
+    color: #69ff69;
+    text-shadow: 0 0 5px #69ff69;
 }
 
-
-
-
-@keyframes nav-animation {
-    from{
-        background-color: #020202;
+/* Animação do gradiente de fundo */
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
     }
-
-    to{
-        background-color: #070707;
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
     }
 }

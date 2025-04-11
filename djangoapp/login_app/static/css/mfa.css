@@ -1,76 +1,135 @@
-
-/* Estilo para h1 */
-h1 {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-body{
-    font-family: Arial, sans-serif;
-    background-color: #abb3a7;
+/* Reset básico */
+* {
     margin: 0;
     padding: 0;
-    justify-content: center;
-    text-align: center;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e2413, #1f801f);
+    color: #eaeaea;
+    min-height: 100vh;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #2e2e2e;
+    gap: 30px; /* espaçamento entre os filhos diretos do body */
 }
-slot{
-   justify-content: center;
-   text-align: center;
+
+/* Títulos */
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-shadow: 2px 2px 5px #00000066;
+    border-bottom: 2px solid #1f801f;
+    padding-bottom: 10px;
 }
-p{
+
+/* Texto padrão */
+p {
     font-size: 1rem;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-/* Estilo para os painéis */
-p{
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background-color: #1a1a1a;
 }
 
+/* Painéis */
+.panel {
+    width: 100%;
+    max-width: 800px;
+    background-color: #1c1c1c;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 2px solid #4dd0e1;
+}
 
-
+/* Ações */
 .panel-actions {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #4dd0e155;
+    padding-top: 20px;
 }
 
-/* Estilo para botões */
-url {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+/* Botões */
+button, .btn {
+    padding: 12px 24px;
+    border: 2px solid #ffffff44;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    color: #fff;
+    margin-top: 10px;
 }
 
-button:hover {
-    background-color: #0056b3;
+button, .btn-primary {
+    background: linear-gradient(135deg, #4dd0e1, #1976d2);
 }
 
-/* Estilo para botões de ação perigosa */
+button:hover, .btn-primary:hover {
+    background: linear-gradient(135deg, #1976d2, #4dd0e1);
+    transform: scale(1.05);
+}
+
 button.danger {
     background-color: #ff4b4b;
+    border-color: #ff000055;
 }
 
 button.danger:hover {
     background-color: #e04343;
 }
 
-/* Estilo para botões secundários */
 button.secondary {
     background-color: #6c757d;
+    border-color: #555;
 }
 
 button.secondary:hover {
     background-color: #5a6268;
+}
+
+/* Links */
+a {
+    color: #4dd0e1;
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-top: 20px;
+    border: 1px solid transparent;
+    transition: 0.3s ease;
+}
+
+a:hover {
+    color: #ffffff;
+    background-color: #4dd0e133;
+    border: 1px solid #4dd0e1;
+    border-radius: 5px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .panel-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    button {
+        width: 100%;
+    }
 }
