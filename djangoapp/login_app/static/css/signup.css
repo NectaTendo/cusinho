@@ -1,90 +1,113 @@
-/* Estiliza o container principal do conteúdo */
+/* Fonte moderna e fundo escuro com gradiente */
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom right, #1e2413, #000000); /* gradiente verde claro para preto */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e2413, #1f801f);
     margin: 0;
     padding: 20px;
     min-height: 100vh;
+    color: #eaeaea;
 }
 
-form {
-    max-width: 350px;
-    margin: 0 auto;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Container principal */
+.signup-container {
+    width: 100%;
+    max-width: 360px;
+    margin: 60px auto;
+    padding: 25px;
+    background-color: #121212;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
 }
 
-/* Estilo para os títulos principais (h1) e subtítulos (h2) */
-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #0f0f0f;
+/* Títulos */
+h1, h2 {
     text-align: center;
+    color: #ffffff;
     margin-bottom: 20px;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 1.8rem;
 }
 
 h2 {
-    font-size: 1.5rem;
-    color: #050404;
-    margin-top: 40px;
-    text-align: center;
+    font-size: 1.3rem;
+    margin-top: 20px;
 }
 
-/* Estilo para os parágrafos */
 p {
-    font-size: 1rem;
-    color: #161616;
     text-align: center;
+    font-size: 1rem;
+    color: #cccccc;
     margin-bottom: 10px;
 }
 
-/* Estiliza as opções de rádio */
+/* Formulário */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="password"],
+input[type="email"],
 input[type="radio"] {
-    margin-right: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background-color: #2b2b2b;
+    color: #eaeaea;
+    font-size: 0.95rem;
+    box-sizing: border-box;
 }
 
+input[type="radio"] {
+    transform: scale(1.1);
+    accent-color: #4dd0e1;
+    width: auto;
+}
 
-/* Estilo para os botões */
+/* Botões */
 button {
-    padding: 10px 10px;
+    padding: 12px;
     font-size: 1rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #64b5f6, #2196f3);
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-/* Estilo específico para o botão de remoção */
-button[type="submit"] {
-    background-color: #5597cc;
-    color: #fff;
+button:hover {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    transform: translateY(-2px);
 }
 
-button[type="submit"]:hover {
-    background-color: #c82333;
-}
-
-a{
+/* Link estilizado como botão */
+a {
+    display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    
-    display: flex;
-    border-radius: 4px;
-    padding: 10px 10px;
-    
+    margin-top: 10px;
+    text-decoration: none;
+    color: #4dd0e1;
+    background-color: #212121;
+    border-radius: 8px;
+    padding: 10px 0;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-.signup-container {
-    max-width: 400px;
-    margin: 60px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+a:hover {
+    background-color: #333;
+    color: #fff;
 }

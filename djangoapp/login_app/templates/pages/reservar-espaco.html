@@ -81,6 +81,33 @@
         min-width: 160px;
     }
 
+    .partida-item {
+    display: block;
+    background-color: #333;
+    border-left: 4px solid #4CAF50;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.partida-item:hover {
+    background-color: #3a3a3a;
+    transform: translateX(5px);
+}
+
+.partida-item strong {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+.partida-item small {
+    color: #aaa;
+    font-size: 14px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -207,7 +234,7 @@
 {% block content %}
 <div class="main-container">
     <div class="content-wrapper">
-        <h1 class="section-title">Reservar espaço / Criar partida</h1>
+        <h1 class="section-title">Criar partida</h1>
         
         <!-- Filtros de Região -->
         <div class="region-filters">
@@ -308,8 +335,8 @@
                 nome: "Arena Flamengo", 
                 regiao: "centro", 
                 esporte: "futebol society", 
-                lat: -22.919, 
-                lng: -42.823
+                lat: -22.909, 
+                lng: -42.804,
             },
             { 
                 nome: "Campo Central", 
@@ -432,7 +459,7 @@
     
     const partidaItem = document.createElement("a");
     partidaItem.classList.add("partida-item");
-    partidaItem.href = `/partida/${partidaId}/`; // Usando a URL existente
+    partidaItem.href = `/participardois`; // Usando a URL existente
     partidaItem.innerHTML = `
         <strong>${esporte}</strong> - ${local}<br>
         <small>${dataFormatada}</small>

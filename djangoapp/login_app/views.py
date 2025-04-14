@@ -122,7 +122,17 @@ def campo_detalhes(request, nome_campo):
 def participar_partida(request, partida_id):
     return render(request, 'pages/participar.html', {'partida_id': partida_id})
 
-
+def participar_dois(request):
+    esporte = request.GET.get('esporte', '')
+    local = request.GET.get('local', '')
+    data = request.GET.get('data', '')
+    
+    context = {
+        'esporte': esporte,
+        'local': local,
+        'data': data,
+    }
+    return render(request, 'pages/participardois.html', context)
 
 def registerPage(request):
 

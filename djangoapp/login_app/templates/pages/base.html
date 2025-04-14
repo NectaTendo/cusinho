@@ -15,9 +15,9 @@
     
     <nav class="navbar">
         <div class="navbar-logo" onclick="window.location.href = '/accounts/profile/'">EsporteFY</div>
-        <ul class="navbar-menu">
-
-            <li><a href="{%url 'mfa_index'%}">Ativar Verificação de 2 fatores</a></li>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <ul class="navbar-menu" id="navbarMenu">
+            <li><a href="{% url 'mfa_index' %}">Ativar Verificação de 2 fatores</a></li>
             <li><a href="{% url 'listacampos' %}">Campos</a></li>
             <li><a href="{% url 'relatorio' %}">Relatório</a></li>
             <li><a href="{% url 'perfilUsuario' %}">Perfil</a></li>
@@ -25,11 +25,39 @@
             <li><a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a></li>
         </ul>
     </nav>
-    
 
     {% block content %}
     {% endblock content %}
     
-    {% block extra_js %}{% endblock %}
+    {% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+            
+            menuToggle.addEventListener('click', function() {
+                navbarMenu.classList.toggle('active');
+                
+                // Altera o ícone entre ☰ e ✕ quando o menu está aberto/fechado
+                if (navbarMenu.classList.contains('active')) {
+                    menuToggle.innerHTML = '✕';
+                } else {
+                    menuToggle.innerHTML = '☰';
+                }
+            });
+            
+            // Fecha o menu quando um item é clicado (para mobile)
+            const navItems = document.querySelectorAll('.navbar-menu a');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navbarMenu.classList.remove('active');
+                        menuToggle.innerHTML = '☰';
+                    }
+                });
+            });
+        });
+        </script>
+    {% endblock %}
 </body>
 </html>

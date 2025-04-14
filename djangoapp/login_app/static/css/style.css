@@ -16,7 +16,7 @@
     /* width: 100%; */
 }
 body{
-    background-color:black;
+    background: linear-gradient(135deg, #1e2413, #262c4e);
     margin: 0;
     padding: 0;
 }
